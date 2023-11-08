@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     settings,
     user
   },
-  // Vuex 计算模块
+  // Vuex 的计算属性
   getters
 })
 
