@@ -20,13 +20,16 @@
           <el-form-item>
             <el-button style="width:350px" type="primary" @click="login">登录</el-button>
           </el-form-item>
+          <el-form-item>
+            <el-button @click="testAxios">测试zxios</el-button>
+          </el-form-item>
         </el-form>
       </el-card>
     </div>
   </div>
 </template>
 <script>
-import axios from 'axios'
+import request from '@/utils/request'
 export default {
   name: 'Login',
   data() {
@@ -73,6 +76,16 @@ export default {
       this.$refs.form.validate((isOK) => {
         if (isOK) {
           this.$store.dispatch('user/login', this.loginForm)
+        }
+      })
+    },
+    testAxios() {
+      request({
+        url: '/sys/login',
+        method: 'post',
+        data: {
+          mobile: '13800000002',
+          password: 'hm#qd@23!'
         }
       })
     }
