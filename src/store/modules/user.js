@@ -2,7 +2,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import { login } from '@/api/user'
 
 const state = {
-  token: getToken // 从缓存中读取初始值
+  token: getToken() // 从缓存中读取初始值
 }
 
 const mutations = {
@@ -14,7 +14,7 @@ const mutations = {
   removeToken() {
     // 删除Vuex的token
     state.token = null
-    removeToken
+    removeToken()
   }
 }
 

@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // 没有token
-    if (whiteList.indexOf(to.path)) {
+    if (whiteList.includes(to.path)) {
       next()
     } else {
       next('/login') // 中转到登录页
