@@ -38,7 +38,7 @@ module.exports = {
     },
     proxy: {
       // path: 目标服务器
-      '/api' : {
+      '/api': {
         target: 'https://heimahr.itheima.net/'
       }
     }
