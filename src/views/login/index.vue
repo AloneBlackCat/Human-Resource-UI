@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     login() {
-      this.$refs.form.validate(async(isOK) => {
+      this.$refs.form.validate(async isOK => {
         if (isOK) {
           await this.$store.dispatch('user/login', this.loginForm)
           // Vuex 中的action 返回的promise
