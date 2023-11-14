@@ -1,10 +1,6 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
-    <!-- 使用svg-icon组件 -->
-    <!-- 设置iconClass属性="文件名(没有后缀)" -->
-    <svg-icon icon-class="link"/>
-    <svg-icon icon-class="user"/>
   </div>
 </template>
 

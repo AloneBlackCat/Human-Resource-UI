@@ -2,9 +2,11 @@ import router from '@/router'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '@/store'
+
 /**
- * 前置守卫
- */
+ *前置守卫
+ *
+*/
 
 const whiteList = ['/login', '/404']
 router.beforeEach((to, from, next) => {
@@ -13,10 +15,11 @@ router.beforeEach((to, from, next) => {
     // 存在token
     if (to.path === '/login') {
       // 跳转到主页
-      next('/')
+      next('/') // 中转到主页
+      // next（地址）并没有执行后置守卫
       nprogress.done()
     } else {
-      next()
+      next() // 放过
     }
   } else {
     // 没有token
@@ -29,10 +32,10 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-/**
+/** *
  * 后置守卫
- */
-
+ * **/
 router.afterEach(() => {
+  console.log('123')
   nprogress.done()
 })

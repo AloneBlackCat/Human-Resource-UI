@@ -5,6 +5,7 @@
       <h1>登录</h1>
       <el-card shadow="never" class="login-card">
         <!--登录表单-->
+        <!-- el-form > el-form-item > el-input -->
         <el-form ref="form" :model="loginForm" :rules="loginRules">
           <el-form-item prop="mobile">
             <el-input v-model="loginForm.mobile" placeholder="请输入手机号" />
@@ -32,7 +33,7 @@ export default {
     return {
       loginForm: {
         mobile: process.env.NODE_ENV === 'development' ? '13800000002' : '',
-        password: process.env.NODE_ENV === 'development' ? 'hm#qd@23!' : '',
+        password: process.env.NODE_ENV === 'development' ? '123456' : '',
         isAgree: process.env.NODE_ENV === 'development'
       },
       loginRules: {
@@ -44,6 +45,7 @@ export default {
           pattern: /^1[3-9]\d{9}$/,
           message: '手机号格式不正确',
           trigger: 'blur'
+
         }],
         password: [{
           required: true,
@@ -52,16 +54,18 @@ export default {
         }, {
           min: 6,
           max: 16,
-          message: '密码长度应在6到16位之间',
+          message: '密码长度应该为6-16位之间',
           trigger: 'blur'
+
         }],
+        // required只能检测 null undefined ""
         isAgree: [{
           validator: (rule, value, callback) => {
             // rule校验规则
             // value 校验的值
             // callback 函数 - promise resolve reject
             // callback() callback(new Error(错误信息))
-            value ? callback() : callback(new Error('你必须勾选用户协议'))
+            value ? callback() : callback(new Error('您必须勾选用户的使用协议'))
           }
         }]
       }
@@ -78,6 +82,7 @@ export default {
         }
       })
     }
+
   }
 }
 </script>
