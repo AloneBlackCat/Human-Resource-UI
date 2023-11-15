@@ -13,3 +13,16 @@ export function getUserInfo() {
     url: '/sys/profile'
   })
 }
+
+/**
+ * 修改密码
+ * @param {} data 传入数据
+ * @returns 返回
+ */
+export function updatePassword(data) {
+  return request({
+    url: '/sys/user/updatePass',
+    method: 'put',
+    data
+  })
+}
