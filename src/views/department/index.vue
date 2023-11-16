@@ -30,24 +30,27 @@
   </div>
 </template>
 <script>
+import { getDepartment } from '@/api/department'
+
 export default {
   name: 'Department',
   data() {
     return {
-      depts: [{ name: '传智教育', managerName: '管理员', children: [{
-        name: '总裁办',
-        managerName: '张三'
-      }, {
-        name: '行政部',
-        managerName: '李四'
-      }, {
-        name: '人事部',
-        managerName: '王五'
-      }] }], // 数据属性
+      depts: [], // 数据属性
       defaultProps: {
         label: 'name', // 要显示的字段名字
         children: 'children'
       }
+    }
+  },
+  created() {
+    this.getDepartment() // 调用获取数据的接口
+  },
+  methods: {
+    // 封装好方法
+    async getDepartment() {
+      const result = await getDepartment()
+      this.depts = result
     }
   }
 }
@@ -60,6 +63,6 @@ export default {
   .tree-manager {
     width: 50px;
     display: inline-block;
-    margin: 10px;
+    margin: 30px;
   }
 </style>
