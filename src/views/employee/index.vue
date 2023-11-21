@@ -4,6 +4,16 @@
       <div class="left">
         <el-input style="margin-bottom:10px" type="text" prefix-icon="el-icon-search" size="small" placeholder="输入员工姓名全员搜索" />
         <!-- 树形组件 -->
+        <el-tree
+          ref="deptTree"
+          node-key="id"
+          :data="depts"
+          :props="defaultProps"
+          default-expand-all
+          :highlight-current="true"
+          :expand-on-click-node="false"
+          @current-change="selectNode"
+        />
       </div>
       <div class="right">
         <el-row class="opeate-tools" type="flex" justify="end">
@@ -19,8 +29,42 @@
 </template>
 
 <script>
+import { getDepartment } from '@/api/department'
+import { transListToTreeData } from '@/utils/index'
 export default {
-  name: 'Employee'
+  name: 'Employee',
+  data() {
+    return {
+      depts: [], // 组织数据
+      defaultProps: {
+        label: 'name',
+        children: 'children'
+      },
+      // 存储查询数据
+      queryParams: {
+        departmentId: null
+      }
+    }
+  },
+  created() {
+    this.getDepartment()
+  },
+  methods: {
+    async getDepartment() {
+      // 递归方法,将列表转化为树形
+      this.depts = transListToTreeData(await getDepartment(), 0)
+      // console.log(this.depts[0])
+      this.queryParams.departmentId = this.depts[0].id
+      // 设置选择节点
+      // 树组件的渲染是异步的, 等到更新完毕
+      this.$nextTick(() => {
+        this.$refs.deptTree.setCurrentKey(this.queryParams.departmentId)
+      })
+    },
+    selectNode(node) {
+      this.queryParams.departmentId = node.id
+    }
+  }
 }
 </script>
 
