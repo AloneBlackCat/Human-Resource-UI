@@ -1,7 +1,9 @@
-import requset from '@/utils/request'
+import request from '@/utils/request'
 
-export function getEmployee() {
-  return requset({
-    url: '/sys/employee'
+// 获取员工列表
+export function getEmployeeList(params) {
+  return request({
+    url: '/sys/user',
+    params // 地址参数 查询参数
   })
 }
