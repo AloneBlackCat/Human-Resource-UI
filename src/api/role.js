@@ -16,3 +16,12 @@ export function addRole(data) {
     data
   })
 }
+
+// 更新角色
+export function updateRole(data) {
+  return request({
+    method: 'put',
+    url: `/sys/role/${data.id}`,
+    data
+  })
+}
