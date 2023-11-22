@@ -4,7 +4,7 @@ import { Message } from 'element-ui'
 import router from '@/router'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 基础地址
-  timeout: 10000
+  timeout: 20000
 }) // 创建一个新的axios实例
 // 成功1 失败2
 service.interceptors.request.use((config) => {
