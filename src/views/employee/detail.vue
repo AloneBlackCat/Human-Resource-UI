@@ -100,7 +100,7 @@
 
 <script>
 import SelectTree from './components/select-tree.vue'
-import { addEmployee } from '@/api/employee'
+import { addEmployee, getEmployeeDetail } from '@/api/employee'
 export default {
   components: { SelectTree },
   data() {
@@ -116,7 +116,7 @@ export default {
       },
       rules: {
         username: [{ required: true, message: '请输入姓名', trigger: 'blur' }, {
-          min: 1, max: 4, message: '姓名为1-4位'
+          min: 1, max: 6, message: '姓名为1-6位'
         }],
         mobile: [{ required: true, message: '请输入手机号', trigger: 'blur' }, {
         //   pattern 正则表达式
@@ -142,7 +142,14 @@ export default {
 
     }
   },
+  created() {
+    // 如何获取路由参数的ID
+    this.$route.params.id && this.getEmployeeDetail()
+  },
   methods: {
+    async getEmployeeDetail() {
+      this.userInfo = await getEmployeeDetail(this.$route.params.id)
+    },
     saveData() {
       this.$refs.userForm.validate(async isOK => {
         if (isOK) {
