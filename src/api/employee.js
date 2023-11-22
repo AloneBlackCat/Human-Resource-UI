@@ -16,3 +16,11 @@ export function exportEmployee() {
     responseType: 'blob' // 使用blob类型接收二进制文件流
   })
 }
+
+// 下载员工导入模板
+export function getExportTemplate() {
+  return request({
+    url: '/sys/user/import/template',
+    responseType: 'blob' // 二进制文件流
+  })
+}
