@@ -1,10 +1,12 @@
 <template>
   <!-- element-ui级联组件 -->
   <el-cascader
+    :value="value"
     size="mini"
     :options="treeData"
     :props="props"
     separator="-"
+    @change="changeValue"
   />
 </template>
 
@@ -12,6 +14,12 @@
 import { getDepartment } from '@/api/department'
 import { transListToTreeData } from '@/utils'
 export default {
+  props: {
+    value: {
+      type: Number, // 存储的部门ID
+      default: null
+    }
+  },
   data() {
     return {
       treeData: [], // 赋值给级联组件options
@@ -27,6 +35,14 @@ export default {
   methods: {
     async getDepartment() {
       this.treeData = transListToTreeData(await getDepartment(), 0) // 将组织架构数据转化树形数值给treeData
+    },
+    changeValue(list) {
+      // 取数组的最后一次
+      if (list.length > 0) {
+        this.$emit('input', list[list.length - 1]) // 将最后一位的ID取出,传出去
+      } else {
+        this.$emit('input', null) // 如果长度为0,值为空
+      }
     }
   }
 }
