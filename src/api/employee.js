@@ -24,3 +24,12 @@ export function getExportTemplate() {
     responseType: 'blob' // 二进制文件流
   })
 }
+
+// 批量导入员工
+export function uploadExcel(data) {
+  return request({
+    method: 'post',
+    url: '/sys/user/import',
+    data // form-data类型 因为要上传文件类型
+  })
+}
