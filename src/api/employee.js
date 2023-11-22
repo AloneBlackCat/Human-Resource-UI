@@ -33,3 +33,11 @@ export function uploadExcel(data) {
     data // form-data类型 因为要上传文件类型
   })
 }
+
+// 删除员工
+export function delEmployee(id) {
+  return request({
+    method: 'delete',
+    url: `/sys/user/${id}`
+  })
+}

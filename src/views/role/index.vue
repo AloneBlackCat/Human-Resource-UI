@@ -181,7 +181,7 @@ export default {
       await delRole(id)
       this.$message.success('删除角色成功')
       // 删除的如果是最后一个
-      if (this.list.length === 1) this.pageParams.page--
+      if (this.list.length === 1 && this.queryParams.page > 1) this.pageParams.page--
       this.getRoleList()
     }
   }
