@@ -83,7 +83,7 @@
             <el-col :span="12">
               <el-form-item label="员工头像">
                 <!-- 放置上传图片 -->
-                <image-upload v-model="userInfo.stafPhoto" />
+                <image-upload v-model="userInfo.staffPhoto" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -116,7 +116,7 @@ export default {
         departmentId: null, // 部门id
         timeOfEntry: '', // 入职时间
         correctionTime: '', // 转正时间
-        stafPhoto: ''
+        staffPhoto: ''
       },
       rules: {
         username: [{ required: true, message: '请输入姓名', trigger: 'blur' }, {
