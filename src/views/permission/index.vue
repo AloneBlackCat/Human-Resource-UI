@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="app-container">
-      <el-button class="btn-add" size="mini" type="primary" @click="showDialog = true">添加权限</el-button>
+      <el-button class="btn-add" size="mini" type="primary" @click="btnShowDialog">添加权限</el-button>
       <el-table :data="list" row-key="id" default-expand-all>
         <el-table-column prop="name" align="center" label="名称" />
         <el-table-column prop="code" align="center" label="标识" />
@@ -27,7 +27,7 @@
           <el-input v-model="permissionFrom.description" style="width:500px" size="mini" />
         </el-form-item>
         <el-form-item label="开启" prop="enVisible">
-          <el-switch v-model="permissionFrom.enVisible" :active-value="1" :inactive-value="0" size="mini" />
+          <el-switch v-model="permissionFrom.enVisible" :active-value="'1'" :inactive-value="'0'" size="mini" />
         </el-form-item>
         <el-form-item>
           <el-row type="flex" justify="center">
@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import { getPermissionList } from '@/api/permission'
+import { getPermissionList, addPermission } from '@/api/permission'
 import { transListToTreeData } from '@/utils'
 export default {
   name: 'Permission',
@@ -52,52 +52,16 @@ export default {
       list: [],
       showDialog: false,
       permissionFrom: {
-        id: '',
         name: '',
         code: '',
         description: '',
-        enVisible: 0,
+        enVisible: '0',
+        type: '',
         pid: ''
       },
       rules: {
-        name: [{ required: true, message: '权限名称不能为空', trigger: 'blur' }, {
-          trigger: 'blur',
-          // 自定义校验
-          validator: async(rule, value, callback) => {
-            // value就是输入的编码
-            let result = await getPermissionList()
-            // 判断是否是编辑模式
-            if (this.permissionFrom.id) {
-              // 编辑场景
-              result = result.filter(item => item.id !== this.permissionFrom.id)
-            }
-            // result数组中是否存在value值
-            if (result.some(item => item.name === value)) {
-              callback(new Error('已有该权限名称'))
-            } else {
-              callback()
-            }
-          }
-        }],
-        code: [{ required: true, message: '权限标识不能为空', trigger: 'blur' }, {
-          trigger: 'blur',
-          // 自定义校验
-          validator: async(rule, value, callback) => {
-            // value就是输入的编码
-            let result = await getPermissionList()
-            // 判断是否是编辑模式
-            if (this.permissionFrom.id) {
-              // 编辑场景
-              result = result.filter(item => item.id !== this.permissionFrom.id)
-            }
-            // result数组中是否存在value值
-            if (result.some(item => item.code === value)) {
-              callback(new Error('已有该权限标识'))
-            } else {
-              callback()
-            }
-          }
-        }]
+        name: [{ required: true, message: '权限名称不能为空', trigger: 'blur' }],
+        code: [{ required: true, message: '权限标识不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -109,9 +73,19 @@ export default {
       const result = transListToTreeData(await getPermissionList(), 0) // 转换为树形结构
       this.list = result
     },
+    btnShowDialog() {
+      this.showDialog = true
+      this.permissionFrom.type = 1
+      this.permissionFrom.pid = 0
+    },
     btnOK() {
-      this.$refs.permissionFrom.validate(isOK => {
-        console.log(isOK)
+      this.$refs.permissionFrom.validate(async isOK => {
+        if (isOK) {
+          await addPermission(this.permissionFrom)
+          this.$message.success('新增权限点成功')
+          this.getPermissionList()
+          this.btnCancel()
+        }
       })
     },
     btnCancel() {
