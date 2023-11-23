@@ -83,6 +83,7 @@
             <el-col :span="12">
               <el-form-item label="员工头像">
                 <!-- 放置上传图片 -->
+                <image-upload v-model="userInfo.stafPhoto" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -102,8 +103,9 @@
 <script>
 import SelectTree from './components/select-tree.vue'
 import { addEmployee, getEmployeeDetail, updateEmployee } from '@/api/employee'
+import ImageUpload from './components/image-upload.vue'
 export default {
-  components: { SelectTree },
+  components: { SelectTree, ImageUpload },
   data() {
     return {
       userInfo: {
@@ -113,7 +115,8 @@ export default {
         formOfEmployment: null, // 聘用形式
         departmentId: null, // 部门id
         timeOfEntry: '', // 入职时间
-        correctionTime: '' // 转正时间
+        correctionTime: '', // 转正时间
+        stafPhoto: ''
       },
       rules: {
         username: [{ required: true, message: '请输入姓名', trigger: 'blur' }, {
