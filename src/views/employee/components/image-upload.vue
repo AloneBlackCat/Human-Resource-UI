@@ -39,11 +39,11 @@ export default {
     uploadImage(params) {
       // console.log(params.file)
       const cos = new COS({
-        SecretId: 'AKIDkZN6174znRuOn153qXKipoaGm5B4tcBY',
-        SecretKey: 'Ok2A7qNuKuZLA8FDyodFqhVH1tIf2IJI'
+        SecretId: 'xxxxx',
+        SecretKey: 'xxxx'
       }) // 完成COS的初始化
       cos.putObject({
-        Bucket: 'human-resource-1309973836', // 存储桶名称
+        Bucket: 'human-resource', // 存储桶名称
         Region: 'ap-chengdu', // 地域名称
         Key: params.file.name, // 文件名称
         StorageClass: 'STANDARD', // 固定值
