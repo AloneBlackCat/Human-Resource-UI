@@ -52,7 +52,7 @@
           <el-table-column label="操作" width="280px">
             <template v-slot="{ row }">
               <el-button size="mini" type="text" @click="$router.push(`/employee/detail/${row.id}`)">查看</el-button>
-              <el-button size="mini" type="text">角色</el-button>
+              <el-button size="mini" type="text" @click="btnRole">角色</el-button>
               <el-popconfirm title="确定删除这条内容吗?" @onConfirm="confirmDel(row.id)">
                 <el-button slot="reference" style="margin-left:10px" size="mini" type="text">删除</el-button>
               </el-popconfirm>
@@ -73,13 +73,20 @@
     </div>
     <!-- 放置导入组件 -->
     <import-excel :show-excel-dialog.sync="showExcelDialog" @uploadSuccess="getEmployeeList" />
+    <!-- 角色弹出层 -->
+    <el-dialog :visible.sync="showRoleDialog" title="分配角色">
+      <el-checkbox-group v-model="roleIds">
+        放置n个的checkbox 要执行checkbox的存储值
+        <el-checkbox v-for="item in roleList" :key="item.id" :label="item.id">{{ item.name }}</el-checkbox>
+      </el-checkbox-group>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getDepartment } from '@/api/department'
 import { transListToTreeData } from '@/utils/index'
-import { getEmployeeList, exportEmployee, delEmployee } from '@/api/employee'
+import { getEmployeeList, exportEmployee, delEmployee, getEnableRoleList } from '@/api/employee'
 import FileSaver from 'file-saver'
 import ImportExcel from './components/import-excel.vue'
 
@@ -104,7 +111,10 @@ export default {
       },
       total: 0, // 记录员工的总数
       list: [], // 存储员工列表数据
-      showExcelDialog: false // 控制excel的单层显示和隐藏
+      showExcelDialog: false, // 控制excel的单层显示和隐藏
+      showRoleDialog: false, // 控制角色弹层
+      roleList: [], // 接收角色列表
+      roleIds: [] // 用于双向绑定数据
     }
   },
   created() {
@@ -165,6 +175,10 @@ export default {
       if (this.list.length === 1 && this.queryParams.page > 1) this.queryParams.page--
       this.getEmployeeList()
       this.$message.success('员工成功删除')
+    },
+    async btnRole() {
+      this.showRoleDialog = true
+      this.roleList = await getEnableRoleList()
     }
   }
 }

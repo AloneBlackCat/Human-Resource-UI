@@ -17,7 +17,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog width="750px" title="新增权限点" :visible.sync="showDialog" @close="btnCancel">
+    <el-dialog width="750px" :title="showTitle" :visible.sync="showDialog" @close="btnCancel">
       <el-form ref="permissionFrom" :model="permissionFrom" :rules="rules" label-width="120px">
         <el-form-item prop="name" label="权限名称">
           <el-input v-model="permissionFrom.name" style="width:500px" size="mini" />
@@ -101,6 +101,11 @@ export default {
           }
         }]
       }
+    }
+  },
+  computed: {
+    showTitle() {
+      return this.permissionFrom.id ? '编辑权限点' : '新增权限点'
     }
   },
   created() {
