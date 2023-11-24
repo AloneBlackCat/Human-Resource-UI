@@ -28,6 +28,7 @@ router.beforeEach(async(to, from, next) => {
         const filterRoutes = asyncRoutes.filter(item => {
           return roles.menus.includes(item.name)
         }) // 筛选中的路由
+        store.commit('user/setRoutes', filterRoutes)
         // 添加动态路由信息到路由表
         router.addRoutes([...filterRoutes, { path: '*', redirect: '/404', hidden: true }])
         // router添加动态路由之后, 需要转发
