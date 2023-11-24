@@ -9,8 +9,10 @@
         <el-table-column align="center" label="操作">
           <template v-slot="{ row }">
             <el-button v-if="row.type === 1" size="mini" type="text" @click="addPermission(row.id,2)">添加</el-button>
-            <el-button size="mini" type="text">编辑</el-button>
-            <el-button size="mini" type="text">删除</el-button>
+            <el-button size="mini" type="text" @click="editPermission(row.id)">编辑</el-button>
+            <el-popconfirm title="确定删除这条内容吗?" @onConfirm="delPermission(row.id)">
+              <el-button slot="reference" style="margin-left:10px" size="mini" type="text">删除</el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -43,7 +45,7 @@
   </div>
 </template>
 <script>
-import { getPermissionList, addPermission } from '@/api/permission'
+import { getPermissionList, addPermission, delPermission, getPermission, updatePermission } from '@/api/permission'
 import { transListToTreeData } from '@/utils'
 export default {
   name: 'Permission',
@@ -117,14 +119,20 @@ export default {
     btnOK() {
       this.$refs.permissionFrom.validate(async isOK => {
         if (isOK) {
-          console.log(this.permissionFrom)
-          await addPermission(this.permissionFrom)
-          this.$message.success('新增权限点成功')
+          if (this.permissionFrom.id) {
+            // 编辑
+            await updatePermission(this.permissionFrom)
+            this.$message.success('权限数据修改成功')
+          } else {
+            await addPermission(this.permissionFrom)
+            this.$message.success('新增权限点成功')
+          }
           this.getPermissionList()
           this.btnCancel()
         }
       })
     },
+    // 清空数据
     btnCancel() {
       this.permissionFrom = {
         name: '',
@@ -136,6 +144,21 @@ export default {
       }
       this.$refs.permissionFrom.resetFields()
       this.showDialog = false
+    },
+    // 删除权限点
+    async delPermission(id) {
+      try {
+        await delPermission(id)
+        this.$message.success('成功删除权限点')
+        this.getPermissionList()
+      } catch (error) {
+        this.$message.error(error)
+      }
+    },
+    // 修改权限点
+    async editPermission(id) {
+      this.permissionFrom = await getPermission(id)
+      this.showDialog = true
     }
   }
 }

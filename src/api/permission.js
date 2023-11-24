@@ -15,3 +15,27 @@ export function addPermission(data) {
     data
   })
 }
+
+// 删除权限点
+export function delPermission(id) {
+  return request({
+    method: 'delete',
+    url: `/sys/permission/${id}`
+  })
+}
+
+// 查询权限点
+export function getPermission(id) {
+  return request({
+    url: `/sys/permission/${id}`
+  })
+}
+
+// 修改权限点数据
+export function updatePermission(data) {
+  return request({
+    method: 'put',
+    url: `/sys/permission/${data.id}`,
+    data
+  })
+}
