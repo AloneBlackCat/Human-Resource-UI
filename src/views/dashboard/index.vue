@@ -6,13 +6,14 @@
         <div class="panel">
           <!-- 个人信息 -->
           <div class="user-info">
-            <img class="avatar" src="../../assets/common/defaultHead.png" alt="">
+            <img v-if="avatar" class="avatar" :src="avatar" alt="">
+            <span v-else class="username">{{ name?.charAt(0) }}</span>
             <div class="company-info">
               <div class="title">
                 江苏传智播客教育科技股份有限公司
                 <span>体验版</span>
               </div>
-              <div class="depart">庆山 ｜ 传智播客-总裁办</div>
+              <div class="depart">{{ name }} ｜ {{ company }}-{{ departmentName }}</div>
             </div>
           </div>
           <!-- 代办 -->
@@ -22,7 +23,7 @@
               <!-- 起始值 终点值  滚动时间 -->
               <count-to
                 :start-val="0"
-                :end-val="228"
+                :end-val="homeData.employeeTotal"
                 :duration="1000"
               />
             </div>
@@ -30,7 +31,7 @@
               <span>正式员工</span>
               <count-to
                 :start-val="0"
-                :end-val="228"
+                :end-val="homeData.regularEmployeeTotal"
                 :duration="1000"
               />
             </div>
@@ -38,7 +39,7 @@
               <span>合同待签署</span>
               <count-to
                 :start-val="0"
-                :end-val="228"
+                :end-val="homeData.contractSignTotal"
                 :duration="1000"
               />
             </div>
@@ -46,7 +47,7 @@
               <span>待入职</span>
               <count-to
                 :start-val="0"
-                :end-val="228"
+                :end-val="homeData.toBeEmployed"
                 :duration="1000"
               />
             </div>
@@ -54,7 +55,7 @@
               <span>本月待转正</span>
               <count-to
                 :start-val="0"
-                :end-val="228"
+                :end-val="homeData.toBeConfirmed"
                 :duration="1000"
               />
             </div>
@@ -62,7 +63,7 @@
               <span>本月待离职</span>
               <count-to
                 :start-val="0"
-                :end-val="228"
+                :end-val="homeData.toBeDismissed"
                 :duration="1000"
               />
             </div>
@@ -70,7 +71,7 @@
               <span>接口总访问</span>
               <count-to
                 :start-val="0"
-                :end-val="228"
+                :end-val="homeData.interfaceAccessTotal"
                 :duration="1000"
               />
             </div>
@@ -111,7 +112,7 @@
                 <span>申报人数</span>
                 <count-to
                   :start-val="0"
-                  :end-val="228"
+                  :end-val="homeData.socialInsurance?.declarationTotal"
                   :duration="1000"
                 />
               </div>
@@ -120,7 +121,7 @@
                   <span>待申报(人)</span>
                   <count-to
                     :start-val="0"
-                    :end-val="228"
+                    :end-val="homeData.socialInsurance?.toDeclareTotal"
                     :duration="1000"
                   />
                 </div>
@@ -128,7 +129,7 @@
                   <span>申报中(人)</span>
                   <count-to
                     :start-val="0"
-                    :end-val="228"
+                    :end-val="homeData.socialInsurance?.declaringTotal"
                     :duration="1000"
                   />
                 </div>
@@ -136,7 +137,7 @@
                   <span>已申报(人)</span>
                   <count-to
                     :start-val="0"
-                    :end-val="228"
+                    :end-val="homeData.socialInsurance?.declaredTotal"
                     :duration="1000"
                   />
                 </div>
@@ -154,9 +155,10 @@
             <div class="chart-info">
               <div class="info-main">
                 <span>申报人数</span>
+                <!-- homeData: {} -->
                 <count-to
                   :start-val="0"
-                  :end-val="228"
+                  :end-val="homeData.providentFund?.declarationTotal"
                   :duration="1000"
                 />
               </div>
@@ -165,7 +167,7 @@
                   <span>待申报(人)</span>
                   <count-to
                     :start-val="0"
-                    :end-val="228"
+                    :end-val="homeData.providentFund?.toDeclareTotal"
                     :duration="1000"
                   />
                 </div>
@@ -173,7 +175,7 @@
                   <span>申报中(人)</span>
                   <count-to
                     :start-val="0"
-                    :end-val="228"
+                    :end-val="homeData.providentFund?.declaringTotal"
                     :duration="1000"
                   />
                 </div>
@@ -181,7 +183,7 @@
                   <span>已申报(人)</span>
                   <count-to
                     :start-val="0"
-                    :end-val="228"
+                    :end-val="homeData.providentFund?.declaredTotal"
                     :duration="1000"
                   />
                 </div>
@@ -270,9 +272,28 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { mapGetters } from 'vuex'
+import { getHomeData } from '@/api/home'
 export default {
   components: {
     CountTo
+  },
+  data() {
+    return {
+      homeData: {} // 存放首页数据的对象
+    }
+  },
+  // 计算属性
+  computed: {
+    ...mapGetters(['name', 'avatar', 'company', 'departmentName']) // 映射给了计算属性
+  },
+  created() {
+    this.getHomeData()
+  },
+  methods: {
+    async getHomeData() {
+      this.homeData = await getHomeData()
+    }
   }
 }
 </script>
