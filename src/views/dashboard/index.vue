@@ -252,8 +252,17 @@
 </template>
 
 <script>
+import * as echarts from 'echarts/core' // 引入所以的echarts核心包
+import { LineChart } from 'echarts/charts' // 引入折线图
+import { GridComponent } from 'echarts/components' // 引入组件
+import { CanvasRenderer } from 'echarts/renderers'
+echarts.use([
+  LineChart,
+  GridComponent,
+  CanvasRenderer
+])
+
 import CountTo from 'vue-count-to'
-import * as echarts from 'echarts' // 引入所以的echarts
 import { mapGetters } from 'vuex'
 import { getHomeData, getMessageList } from '@/api/home'
 export default {
