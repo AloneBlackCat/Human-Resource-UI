@@ -43,6 +43,7 @@ import { initSalary } from '@/api/salary'
 export default {
   name: 'UsersTableIndex',
   props: [
+    // eslint-disable-next-line vue/require-prop-types
     'userId'
   ],
   data() {
