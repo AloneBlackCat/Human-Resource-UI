@@ -39,7 +39,12 @@ Vue.config.productionTip = false
 Vue.directive('permission', {
   // 会在指令作用的元素插入dom之后执行
   inserted(el, binding) {
-    console.log(el, binding)
+    // console.log(el)
+    const points = store.state.user.userInfo?.roles?.points || [] // 当前用户信息的操作权限
+    if (!points.includes(binding.value)) {
+      // 不存在就删除或禁用
+      el.remove() // 删除元素
+    }
   }
 })
 

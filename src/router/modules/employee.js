@@ -13,6 +13,7 @@ export default {
     }
   }, {
     path: '/employee/detail/:id?', // 员工详情的地址
+    name: 'detail',
     component: () => import('@/views/employee/detail.vue'),
     hidden: true, // 表示隐藏左侧菜单
     meta: {
